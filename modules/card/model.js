@@ -34,6 +34,10 @@ const Card = model(
       enum: ["task", "challenge"],
       default: "task",
     },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
+    },
   })
 );
 
