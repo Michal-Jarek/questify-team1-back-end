@@ -20,7 +20,6 @@ const User = model(
       {
         title: {
           type: String,
-          required: [true, "Title is required"],
         },
         difficulty: {
           type: String,
