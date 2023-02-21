@@ -12,13 +12,8 @@ const Card = model(
       enum: ["easy", "normal", "hard"],
       default: "normal",
     },
-    date: {
-      type: String,
-      default: "Today",
-    },
-    time: {
-      type: String,
-    },
+    date: String,
+    time: String,
     status: {
       type: String,
       enum: ["incomplete", "complete"],

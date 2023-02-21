@@ -1,17 +1,22 @@
-const express = require('express');
+const express = require("express");
 
-const cardController = require("../modules/card/controller")
+const cardController = require("../modules/card/controller");
+const { auth } = require("../modules/auth/middleware");
+const {
+  validateData,
+  validateDataForEditing,
+} = require("../modules/card/middleware");
 
 const router = express.Router();
 
-router.get('/', cardController.getAllCards);
+router.get("/", auth, cardController.getAllCards);
 
-router.post('/', cardController.createCard);
+router.post("/", auth, validateData, cardController.createCard);
 
-router.patch('/:cardId', cardController.editCard);
+router.patch("/:cardId", auth, validateDataForEditing, cardController.editCard);
 
-router.patch('/:cardId/complete', cardController.checkCardComplete);
+router.patch("/:cardId/complete", auth, cardController.checkCardComplete);
 
-router.delete('/:cardId', cardController.deleteCard);
+router.delete("/:cardId", auth, cardController.deleteCard);
 
 module.exports = router;
