@@ -6,9 +6,9 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const swaggerUi = require("swagger-ui-express");
 
-const swaggerDocument = require("./swagger.json");
-const authRouter = require("./routes/auth");
-const cardRouter = require("./routes/card");
+const swaggerDocument = require("../swagger.json");
+const authRouter = require("../routes/auth");
+const cardRouter = require("../routes/card");
 
 const app = express();
 
@@ -44,3 +44,4 @@ app.use(function (err, req, res, next) {
 });
 
 module.exports = app;
+exports.handler = app;
