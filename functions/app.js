@@ -5,6 +5,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const swaggerUi = require("swagger-ui-express");
+const serverless = require("serverless-http");
 
 const swaggerDocument = require("../swagger.json");
 const authRouter = require("../routes/auth");
@@ -43,5 +44,6 @@ app.use(function (err, req, res, next) {
   res.render("error");
 });
 
-module.exports = app;
-exports.handler = app;
+const handler = serverless(app);
+
+module.exports = { app, handler };
