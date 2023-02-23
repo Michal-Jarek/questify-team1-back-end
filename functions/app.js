@@ -13,10 +13,6 @@ const cardRouter = require("../routes/card");
 
 const app = express();
 
-// view engine setup
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
-
 app.use(logger("dev"));
 app.use(cors());
 app.use(express.json());
