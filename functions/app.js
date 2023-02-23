@@ -14,7 +14,7 @@ const cardRouter = require("../routes/card");
 const app = express();
 
 // view engine setup
-app.set("views", "./views");
+app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.engine("ejs", require("ejs").__express);
 
@@ -24,10 +24,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use("/.netlify/functions/app/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.use("/auth", authRouter);
-app.use("/card", cardRouter);
+app.use("/.netlify/functions/app/auth", authRouter);
+app.use("/.netlify/functions/app/card", cardRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -45,6 +45,5 @@ app.use(function (err, req, res, next) {
   res.render("error");
 });
 
-const handler = serverless(app);
-
-module.exports = { app, handler };
+module.exports = app;
+module.exports.handler = serverless(app);
