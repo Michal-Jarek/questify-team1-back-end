@@ -6,12 +6,19 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const swaggerUi = require("swagger-ui-express");
 const serverless = require("serverless-http");
+const { mongoose } = require("mongoose");
+require("dotenv").config();
 
 const swaggerDocument = require("../swagger.json");
 const authRouter = require("../routes/auth");
 const cardRouter = require("../routes/card");
 
 const app = express();
+
+const uriDb = process.env.MONGODB_URL;
+mongoose.connect(uriDb, () => {
+    console.log("Mongo connected");
+});
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
