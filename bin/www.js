@@ -4,11 +4,11 @@
  * Module dependencies.
  */
 
-var app = require("../app");
+var { app } = require("../functions/app");
 var debug = require("debug")("questify-team1-back-end:server");
 var http = require("http");
 const { mongoose } = require("mongoose");
-require("dotenv").config()
+require("dotenv").config();
 
 const uriDb = process.env.MONGODB_URL;
 /**

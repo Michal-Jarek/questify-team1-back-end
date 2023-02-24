@@ -5,16 +5,25 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const swaggerUi = require("swagger-ui-express");
+const serverless = require("serverless-http");
+const { mongoose } = require("mongoose");
+require("dotenv").config();
 
-const swaggerDocument = require("./swagger.json");
-const authRouter = require("./routes/auth");
-const cardRouter = require("./routes/card");
+const swaggerDocument = require("../swagger.json");
+const authRouter = require("../routes/auth");
+const cardRouter = require("../routes/card");
 
 const app = express();
+
+const uriDb = process.env.MONGODB_URL;
+mongoose.connect(uriDb, () => {
+    console.log("Mongo connected");
+});
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
+app.engine("ejs", require("ejs").__express);
 
 app.use(logger("dev"));
 app.use(cors());
@@ -22,10 +31,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use("/.netlify/functions/app/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.use("/auth", authRouter);
-app.use("/card", cardRouter);
+app.use("/.netlify/functions/app/auth", authRouter);
+app.use("/.netlify/functions/app/card", cardRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -44,3 +53,4 @@ app.use(function (err, req, res, next) {
 });
 
 module.exports = app;
+module.exports.handler = serverless(app);

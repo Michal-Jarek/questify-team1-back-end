@@ -1,8 +1,8 @@
 {
   "openapi" : "3.0.0",
   "servers" : [ {
-    "description" : "SwaggerHub API Auto Mocking",
-    "url" : "https://virtserver.swaggerhub.com/questifybackend1/Questify/1.0.0"
+    "description" : "Questify backend url",
+    "url" : "https://stirring-pavlova-0c5052.netlify.app/.netlify/functions/app"
   } ],
   "info" : {
     "description" : "API documentation for GoIT team 1 project 'Questify'. [Backend github repository](https://github.com/Michal-Jarek/questify-team1-back-end)",
