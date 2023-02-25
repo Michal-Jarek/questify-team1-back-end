@@ -298,12 +298,12 @@
       "RegistrationLoginResponse" : {
         "type" : "object",
         "properties" : {
-          "token" : {
+          "accessToken" : {
             "type" : "string",
             "description" : "JSON Web Tokens",
             "example" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzZWZjNThjNmVjMTkxODcwNGM3NzhmMyIsImlhdCI6MTY3NjczNTE2MCwiZXhwIjoxNjc2NzM4NzYwfQ.kTwMPAjmX_VrWtFomKlA9FCZngjc4sA2_Ke9WjsIrEg"
           },
-          "user" : {
+          "userData" : {
             "type" : "object",
             "properties" : {
               "email" : {
