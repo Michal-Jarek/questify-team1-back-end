@@ -18,7 +18,7 @@ const register = async (req, res) => {
 
     return res
       .status(201)
-      .json({ token, user: { email: user.email, id: user.id } });
+      .json({ accessToken: token, userData: { email: user.email, id: user.id } });
   } catch {
     return res.status(409).json({ message: "Email in use" });
   }
@@ -34,7 +34,7 @@ const login = async (req, res) => {
   const token = jwt.sign({ id: user.id }, secretKey, { expiresIn: "1h" });
   await authService.updateById(user.id, { token });
 
-  return res.status(200).json({ token, user: { email, id: user.id } });
+  return res.status(200).json({ accessToken: token, userData: { email, id: user.id } });
 };
 
 const logout = async (req, res) => {

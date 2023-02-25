@@ -1,4 +1,3 @@
-const { ObjectID } = require("mongodb");
 const { isValidObjectId } = require("mongoose");
 const cardService = require("./service");
 
