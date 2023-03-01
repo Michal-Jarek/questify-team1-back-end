@@ -12,11 +12,14 @@ const User = model(
       type: String,
       required: [true, "Password is required"],
     },
-    token: {
-      type: String,
-      default: null,
-    },
   })
 );
 
-module.exports = User;
+const Session = model(
+  "session",
+  new Schema({
+    uid: String,
+  })
+);
+
+module.exports = { User, Session };

@@ -36,7 +36,6 @@ const editCard = async (req, res) => {
     });
   }
 
-
   if (!title && !difficulty && !date && !time && !category && !type) {
     return res.status(400).json({ message: "missing fields" });
   }
