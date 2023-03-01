@@ -4,9 +4,9 @@ const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 require("dotenv").config();
 
-const User = require("./model");
+const { User, Session } = require("./model");
 
-const secret = process.env.JTW_SECRET;
+const secret = process.env.JTW_ACCESS_SECRET;
 
 const schema = Joi.object({
   email: Joi.string()
@@ -17,8 +17,21 @@ const schema = Joi.object({
   password: Joi.string().pattern(new RegExp("^[a-zA-Z0-9]{3,30}$")).required(),
 });
 
+const sidSchema = Joi.object({
+  sid: Joi.string().required(),
+});
+
 const validateData = (req, res, next) => {
   const { error, value } = schema.validate(req.body);
+  if (error) {
+    return res.status(400).json({ message: error.message });
+  }
+  req.body = value;
+  next();
+};
+
+const validateSid = (req, res, next) => {
+  const { error, value } = sidSchema.validate(req.body);
   if (error) {
     return res.status(400).json({ message: error.message });
   }
@@ -32,23 +45,27 @@ const params = {
 };
 
 passport.use(
-  new JwtStrategy(params, (payload, done) => {
-    User.findById(payload.id, (err, user) => {
-      if (err) return done(err, false);
-      if (user) return done(null, user);
-      return done(null, false);
-    });
+  new JwtStrategy(params, async (payload, done) => {
+    try {
+      const user = await User.findById(payload.uid);
+      const session = await Session.findById(payload.sid);
+      return done(null, { user, session });
+    } catch (err) {
+      return done(err, false);
+    }
   })
 );
 
 const auth = (req, res, next) => {
-  passport.authenticate("jwt", { session: false }, (error, user) => {
-    if (!user.token || error) {
+  passport.authenticate("jwt", { session: false }, (error, data) => {
+    // rome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
+    if (!data.user || !data.session || error) {
       return res.status(401).json({ message: "Not authorized" });
     }
-    req.user = user;
+    req.user = data.user;
+    req.session = data.session;
     next();
   })(req, res, next);
 };
 
-module.exports = { validateData, auth };
+module.exports = { validateData, validateSid, auth };
